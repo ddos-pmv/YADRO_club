@@ -55,6 +55,12 @@ build CMakeFiles/YADRO.dir/src/main.cpp.o: CXX_COMPILER__YADRO_unscanned_Debug /
   OBJECT_DIR = CMakeFiles/YADRO.dir
   OBJECT_FILE_DIR = CMakeFiles/YADRO.dir/src
 
+build CMakeFiles/YADRO.dir/src/computer_club.cpp.o: CXX_COMPILER__YADRO_unscanned_Debug /home/sergey/CLionProjects/YADRO/src/computer_club.cpp || cmake_object_order_depends_target_YADRO
+  DEP_FILE = CMakeFiles/YADRO.dir/src/computer_club.cpp.o.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles/YADRO.dir
+  OBJECT_FILE_DIR = CMakeFiles/YADRO.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target YADRO
@@ -63,7 +69,7 @@ build CMakeFiles/YADRO.dir/src/main.cpp.o: CXX_COMPILER__YADRO_unscanned_Debug /
 #############################################
 # Link the executable YADRO
 
-build YADRO: CXX_EXECUTABLE_LINKER__YADRO_Debug CMakeFiles/YADRO.dir/src/main.cpp.o
+build YADRO: CXX_EXECUTABLE_LINKER__YADRO_Debug CMakeFiles/YADRO.dir/src/main.cpp.o CMakeFiles/YADRO.dir/src/computer_club.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/YADRO.dir
   POST_BUILD = :

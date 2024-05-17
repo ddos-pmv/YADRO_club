@@ -2,11 +2,10 @@
 #include <fstream>
 #include <string>
 #include "computer_club.h"
-#include "event.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <input_file>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <path_to_file>" << std::endl;
         return 1;
     }
 
@@ -16,22 +15,17 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    int tableCount, hourlyRate;
-    std::string startTime, endTime;
-    inputFile >> tableCount >> startTime >> endTime >> hourlyRate;
+    ComputerClub club{};
 
-    ComputerClub club(tableCount, startTime, endTime, hourlyRate);
+    if(!club.initConfig(inputFile)){
+        return 1;
+    };
 
     std::string line;
-    std::getline(inputFile, line); // Consume the rest of the line after hourly rate
+//    while(std::getline(inputFile, line)){
+//        auto event = EventFactory::createEvent(line);
+//    }
 
-    while (std::getline(inputFile, line)) {
-        auto event = EventFactory::createEvent(line, club);
-        club.addEvent(std::move(event));
-    }
-
-    club.processEvents();
-    club.printSummary(std::cout);
 
     return 0;
 }

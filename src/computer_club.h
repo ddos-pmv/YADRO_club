@@ -4,9 +4,26 @@
 
 #ifndef YADRO_COMPUTER_CLUB_H
 #define YADRO_COMPUTER_CLUB_H
+#include <iostream>
+
+class ComputerClub {
+public:
+    bool initConfig(std::istream &inputFile);
 
 
-class computer_club {
+    int tableCount;
+    int timeStart;
+    int timeEnd;
+    int hourlyRate;
+
+
+
+private:
+    bool initTables(std::string &line);
+    bool initTime(std::string &line);
+    bool initHourlyRate(std::string &line);
+
+
 
 };
 

@@ -8,6 +8,7 @@ set(SOURCES
 
 set(HEADERS
         src/computer_club.h
+        src/computer_club.cpp
 )
 
 add_executable(YADRO ${SOURCES} ${HEADERS})
