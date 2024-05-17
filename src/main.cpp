@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include "computer_club.h"
+#include "event.h"
+#include <memory>
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -21,11 +23,23 @@ int main(int argc, char* argv[]) {
         return 1;
     };
 
+    bool formatError = false;
     std::string line;
-//    while(std::getline(inputFile, line)){
-//        auto event = EventFactory::createEvent(line);
-//    }
+    while(std::getline(inputFile, line)){
+       EventPtr event = EventFactory::createEvent(line, club);
+       club.addEvent(std::move(event));
+       break;
+       if(!event){
+           formatError = true;
 
+           break;
+       }
+       club.addEvent(std::move(event));
+    }
+
+    if(!formatError){
+        club.processEvents();
+    }
 
     return 0;
 }

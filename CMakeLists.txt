@@ -4,11 +4,14 @@ project(YADRO)
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCES
         src/main.cpp
+        src/event.cpp
+        src/computer_club.cpp
 )
 
 set(HEADERS
         src/computer_club.h
-        src/computer_club.cpp
+        src/event.h
+
 )
 
 add_executable(YADRO ${SOURCES} ${HEADERS})

@@ -1,8 +1,8 @@
 //
 // Created by sergey on 17.05.24.
 //
-#pragma once
 #include "computer_club.h"
+#include "event.h"
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -37,13 +37,13 @@ bool ComputerClub::initTime(std::string &line) {
     char delim;
     int hours , minutes;
 
-    if(!(iss>>hours>>delim>>minutes) || hours<0 || minutes<0) {
+    if(!(iss>>hours>>delim>>minutes) || hours<0 || hours>24 || minutes>60 || minutes<0 || (hours==24 and minutes>0)) {
         std::cout<<line;
         return false;
     }
     timeStart = hours*60 + minutes;
 
-    if(!(iss>>hours>>delim>>minutes) || hours<0 || minutes<0 || (hours*60 + minutes<timeStart)){
+    if(!(iss>>hours>>delim>>minutes) ||hours<0 || hours>24 || minutes>60 || minutes<0 || (hours==24 and minutes>0)|| (hours*60 + minutes<timeStart)){
         std::cout<<line;
         return false;
     }
@@ -59,3 +59,21 @@ bool ComputerClub::initHourlyRate(std::string &line) {
     }
     return true;
 }
+
+void ComputerClub::addEvent(std::unique_ptr<Event> event) {
+    events.push_back(std::move(event));
+}
+
+void ComputerClub::processEvents() {
+    for(auto &event :events){
+        event->print();
+        event->execute();
+    }
+}
+
+
+
+
+
+
+
