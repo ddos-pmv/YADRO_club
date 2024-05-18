@@ -9,6 +9,7 @@
 #include "computer_club.h"
 #include <memory>
 #include <iostream>
+#include <iomanip>
 
 class Event {
 public:
@@ -16,10 +17,12 @@ public:
         :time(time), club(club), detail(detail){};
     virtual void execute() = 0;
     virtual void print(std::ostream &out = std::cout){
-        out<<time/60<<":"<<time%60<<" "<<id<<" "<<detail<<'\n';
+        out<<std::setfill('0') << std::setw(2)<<time/60
+        <<":"<<std::setfill('0') << std::setw(2)<<time%60<<" "<<id<<" "<<detail<<'\n';
     };
     void printError(const std::string &errorMsg) const{
-        std::cout<<time/60<<":"<<time%60<<" 13 "<<errorMsg<<'\n';
+        std::cout<<std::setfill('0') << std::setw(2)<<time/60
+        <<":"<<std::setfill('0') << std::setw(2)<<time%60<<" 13 "<<errorMsg<<'\n';
     }
     virtual ~Event() = default;
 protected:

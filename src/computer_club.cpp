@@ -79,6 +79,25 @@ std::string &ComputerClub::getFirstInQueue() {
     return waitingClients.front();
 }
 
+void ComputerClub::printSummary() {
+    for(int i= 1;i<=tableCount;i++){
+        std::cout<<i<<" "<<tables[i].revenue<<" "
+        <<std::setfill('0') << std::setw(2)<<tables[i].occupiedMinutes/60
+        <<":"<<std::setfill('0') << std::setw(2)<<tables[i].occupiedMinutes%60<<'\n';
+    }
+
+}
+
+void ComputerClub::processClosing() {
+    for(auto &[key, client]:clients){
+        if(client.inClub){
+            EventPtr exitEvent = std::make_unique<ExitEvent>(timeEnd, key, *this);
+            exitEvent->print();
+            exitEvent->execute();
+        }
+    }
+}
+
 
 
 

@@ -6,13 +6,16 @@
 #include "computer_club.h"
 #include <sstream>
 #include <regex>
+#include <iomanip>
 
 
 void SeatEvent::print(std::ostream &out){
-    out<<time/60<<":"<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
+    out<<std::setfill('0') << std::setw(2)<<time/60
+       <<":"<<std::setfill('0') << std::setw(2)<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
 };
 void SeatInnerEvent::print(std::ostream &out) {
-    out<<time/60<<":"<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
+    out<<std::setfill('0') << std::setw(2)<<time/60
+    <<":"<<std::setfill('0') << std::setw(2)<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
 }
 
 
@@ -94,8 +97,8 @@ void SeatEvent::execute() {
         Table &oldTable = club.getTable(client.currentTable);
         oldTable.occupiedMinutes += time - client.startTime;
         if(client.paidForTime < time){
-            oldTable.revenue += club.getHourlyRate() * (time - client.paidForTime + 59) / 60;
-            client.paidForTime = client.startTime + ((time - client.paidForTime + 59) / 60) *60;
+            oldTable.revenue += club.getHourlyRate() * ((time - client.startTime + 59) / 60);
+            client.paidForTime = client.startTime + ((time - client.startTime + 59) / 60) * 60;
         }
         oldTable.occupiedNow = false;
         oldTable.currentClient.clear();
@@ -136,8 +139,8 @@ void LeaveEvent::execute() {
         Table &oldTable = club.getTable(client.currentTable);
         oldTable.occupiedMinutes += time - client.startTime;
         if (client.paidForTime < time) {
-            oldTable.revenue += club.getHourlyRate() * (time - client.paidForTime + 59) / 60;
-            client.paidForTime = client.startTime + ((time - client.paidForTime + 59) / 60) * 60;
+            oldTable.revenue += club.getHourlyRate() * ((time - client.startTime + 59) / 60);
+            client.paidForTime = client.startTime + ((time - client.startTime + 59) / 60) * 60;
         }
         oldTable.occupiedNow = false;
         oldTable.currentClient.clear();
@@ -149,7 +152,7 @@ void LeaveEvent::execute() {
         if (club.getWaitingCount() >0) {
             std::string waitingClient = club.getFirstInQueue();
             club.popQueue();
-            std::unique_ptr seatInnerEvent = std::make_unique<SeatInnerEvent>(time, waitingClient, newFreeTable, club);
+            EventPtr seatInnerEvent = std::make_unique<SeatInnerEvent>(time, waitingClient, newFreeTable, club);
             seatInnerEvent->print();
             seatInnerEvent->execute();
         }
@@ -166,7 +169,7 @@ void ExitEvent::execute() {
         Table &oldTable = club.getTable(client.currentTable);
         oldTable.occupiedMinutes += time - client.startTime;
         if(client.paidForTime < time){
-            oldTable.revenue += club.getHourlyRate() * (time - client.paidForTime + 59) / 60;
+            oldTable.revenue += club.getHourlyRate() * ((time - client.startTime + 59) / 60);
         }
         oldTable.occupiedNow = false;
         oldTable.currentClient.clear();

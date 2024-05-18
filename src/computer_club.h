@@ -36,14 +36,18 @@ public:
         curMaxTime = std::max(curMaxTime, time);
     }
     void processEvents();
+    void printSummary();
+    void processClosing();
+
     void addEvent(std::unique_ptr<Event> event);
     int getTimeStart() const{ return timeStart;};
     int getTimeEnd() const{return timeEnd;};
     int getHourlyRate()const{return hourlyRate;};
     int getWaitingCount(){return (int)waitingClients.size();};
-    int getOccupiedTables() {return occupiedTables;};
+    int getOccupiedTables() const {return occupiedTables;};
     int decOccupiedTables() {return --occupiedTables;};
     int incOccupiedTables() {return ++occupiedTables;};
+
     void addWaitingClient(std::string &name);
     bool isFreeTable();
     Client &getClient(std::string &name) {

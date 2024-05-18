@@ -4,6 +4,7 @@
 #include "computer_club.h"
 #include "event.h"
 #include <memory>
+#include <iomanip>
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
@@ -35,7 +36,17 @@ int main(int argc, char* argv[]) {
     }
 
     if(!formatError){
+        int startTime = club.getTimeStart();
+        int endTime = club.getTimeEnd();
+        std::cout<<std::setfill('0') << std::setw(2)<<startTime/60
+        <<':'<<std::setfill('0') << std::setw(2)<<startTime%60<<'\n';
+
         club.processEvents();
+        club.processClosing();
+        club.printSummary();
+
+        std::cout<<std::setfill('0') << std::setw(2)<<endTime/60
+                 <<':'<<std::setfill('0') << std::setw(2)<<endTime%60<<'\n';
     }
 
     return 0;
