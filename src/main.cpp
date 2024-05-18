@@ -27,11 +27,8 @@ int main(int argc, char* argv[]) {
     std::string line;
     while(std::getline(inputFile, line)){
        EventPtr event = EventFactory::createEvent(line, club);
-       club.addEvent(std::move(event));
-       break;
        if(!event){
            formatError = true;
-
            break;
        }
        club.addEvent(std::move(event));

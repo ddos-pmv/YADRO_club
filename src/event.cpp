@@ -9,8 +9,12 @@
 
 
 void SeatEvent::print(std::ostream &out){
-    out<<time/60<<" "<<time%60<<" "<<id<<" "<<detail<<" "<<tableId;
+    out<<time/60<<":"<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
 };
+void SeatInnerEvent::print(std::ostream &out) {
+    out<<time/60<<":"<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
+}
+
 
 
 bool EventFactory::validateTime(int hours, int minutes) {
@@ -74,13 +78,112 @@ void ArrivalEvent::execute() {
     }
     client.inClub = true;
 }
-void SeatEvent::execute() {};
-void WaitEvent::execute() {};
-void LeaveEvent::execute() {};
+void SeatEvent::execute() {
+    Client& client = club.getClient(detail);
+    if (!client.inClub) {
+        printError("ClientUnknown");
+        return;
+    }
+    Table &table = club.getTable(tableId);
+    if(table.occupiedNow){
+        printError("PlaceIsBusy");
+        return;
+    }
+    club.incOccupiedTables();
+    if(client.currentTable!=0){
+        Table &oldTable = club.getTable(client.currentTable);
+        oldTable.occupiedMinutes += time - client.startTime;
+        if(client.paidForTime < time){
+            oldTable.revenue += club.getHourlyRate() * (time - client.paidForTime + 59) / 60;
+            client.paidForTime = client.startTime + ((time - client.paidForTime + 59) / 60) *60;
+        }
+        oldTable.occupiedNow = false;
+        oldTable.currentClient.clear();
+        club.decOccupiedTables();
+
+    }
+    client.startTime = time;
+    client.currentTable = tableId;
+    table.currentClient = detail;
+    table.occupiedNow = true;
+};
+void WaitEvent::execute() {
+    Client & client = club.getClient(detail);
+    if (!client.inClub) {
+        printError("ClientUnknown");
+        return;
+    }
+    if(club.getOccupiedTables()<club.getTableCount()){
+        printError("ICanWaitNoLonger");
+        return;
+    }
+    if(club.getTableCount() <= club.getWaitingCount() ){
+        EventPtr exitEvent = std::make_unique<ExitEvent>(time, detail, club);
+        exitEvent->print();
+        exitEvent->execute();
+        return;
+    }
+    club.addWaitingClient(detail);
+
+};
+void LeaveEvent::execute() {
+    Client & client = club.getClient(detail);
+    if (!client.inClub) {
+        printError("ClientUnknown");
+        return;
+    }
+    if(client.currentTable!=0) {
+        Table &oldTable = club.getTable(client.currentTable);
+        oldTable.occupiedMinutes += time - client.startTime;
+        if (client.paidForTime < time) {
+            oldTable.revenue += club.getHourlyRate() * (time - client.paidForTime + 59) / 60;
+            client.paidForTime = client.startTime + ((time - client.paidForTime + 59) / 60) * 60;
+        }
+        oldTable.occupiedNow = false;
+        oldTable.currentClient.clear();
+        club.decOccupiedTables();
 
 
+        client.inClub = false;
+        int newFreeTable = client.currentTable;
+        if (club.getWaitingCount() >0) {
+            std::string waitingClient = club.getFirstInQueue();
+            club.popQueue();
+            std::unique_ptr seatInnerEvent = std::make_unique<SeatInnerEvent>(time, waitingClient, newFreeTable, club);
+            seatInnerEvent->print();
+            seatInnerEvent->execute();
+        }
+    }
+    client.currentTable = 0;
+
+};
 
 
+void ExitEvent::execute() {
+    Client & client = club.getClient(detail);
+    client.inClub = false;
+    if(client.currentTable!=0){
+        Table &oldTable = club.getTable(client.currentTable);
+        oldTable.occupiedMinutes += time - client.startTime;
+        if(client.paidForTime < time){
+            oldTable.revenue += club.getHourlyRate() * (time - client.paidForTime + 59) / 60;
+        }
+        oldTable.occupiedNow = false;
+        oldTable.currentClient.clear();
+        club.decOccupiedTables();
+    }
+    client.currentTable = 0;
+
+}
 
 
+void SeatInnerEvent::execute() {
+    Client& client = club.getClient(detail);
+    Table &table = club.getTable(tableId);
+    client.startTime = time;
+    client.currentTable = tableId;
+    table.currentClient = detail;
+    table.occupiedNow = true;
+    club.incOccupiedTables();
+}
 

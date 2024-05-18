@@ -71,6 +71,14 @@ void ComputerClub::processEvents() {
     }
 }
 
+void ComputerClub::addWaitingClient(std::string &name) {
+    waitingClients.emplace(name);
+}
+
+std::string &ComputerClub::getFirstInQueue() {
+    return waitingClients.front();
+}
+
 
 
 

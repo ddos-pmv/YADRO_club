@@ -24,6 +24,7 @@ struct Client {
     bool inClub = false;
     int startTime = 0;
     int currentTable = 0;
+    int paidForTime = 0;
 };
 
 class ComputerClub {
@@ -38,14 +39,25 @@ public:
     void addEvent(std::unique_ptr<Event> event);
     int getTimeStart() const{ return timeStart;};
     int getTimeEnd() const{return timeEnd;};
+    int getHourlyRate()const{return hourlyRate;};
+    int getWaitingCount(){return (int)waitingClients.size();};
+    int getOccupiedTables() {return occupiedTables;};
+    int decOccupiedTables() {return --occupiedTables;};
+    int incOccupiedTables() {return ++occupiedTables;};
+    void addWaitingClient(std::string &name);
+    bool isFreeTable();
     Client &getClient(std::string &name) {
         return clients[name];
     }
+    Table &getTable(int tableId){
+        return tables[tableId];
+    }
+    std::string &getFirstInQueue();
+    void popQueue(){ waitingClients.pop();};
 
 
 private:
     std::map<std::string,Client> clients;
-    std::set<std::string> clientsInClub;
     std::map<int,Table> tables;
     std::queue<std::string> waitingClients;
     std::vector<std::unique_ptr<Event>> events;
@@ -55,6 +67,7 @@ private:
     int timeEnd;
     int hourlyRate;
     int curMaxTime = 0;
+    int occupiedTables = 0;
     bool initTables(std::string &line);
     bool initTime(std::string &line);
     bool initHourlyRate(std::string &line);

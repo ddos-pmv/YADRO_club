@@ -64,6 +64,22 @@ public:
     void execute() override;
 };
 
+class ExitEvent:public Event{
+public:
+    ExitEvent(int time, const std::string &detail, ComputerClub &club)
+            :Event(time, detail, club){id = 11;};
+    void execute() override;
+};
+class SeatInnerEvent:public Event{
+public:
+    SeatInnerEvent(int time, const std::string &detail, int tableId, ComputerClub &club)
+            :Event(time, detail, club), tableId(tableId){id = 12;};
+    void execute() override;
+    void print(std::ostream &out = std::cout);
+private:
+    int tableId;
+};
+
 
 
 class EventFactory{
