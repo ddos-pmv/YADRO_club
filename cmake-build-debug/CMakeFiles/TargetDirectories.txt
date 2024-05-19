@@ -1,3 +1,0 @@
-/home/sergey/CLionProjects/YADRO/cmake-build-debug/CMakeFiles/YADRO.dir
-/home/sergey/CLionProjects/YADRO/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/sergey/CLionProjects/YADRO/cmake-build-debug/CMakeFiles/rebuild_cache.dir
