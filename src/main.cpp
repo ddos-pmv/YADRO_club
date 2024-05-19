@@ -43,10 +43,11 @@ int main(int argc, char* argv[]) {
 
         club.processEvents();
         club.processClosing();
+        std::cout<<std::setfill('0') << std::setw(2)<<endTime/60
+        <<':'<<std::setfill('0') << std::setw(2)<<endTime%60<<'\n';
         club.printSummary();
 
-        std::cout<<std::setfill('0') << std::setw(2)<<endTime/60
-                 <<':'<<std::setfill('0') << std::setw(2)<<endTime%60<<'\n';
+
     }
 
     return 0;
