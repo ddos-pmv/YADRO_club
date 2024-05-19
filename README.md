@@ -9,7 +9,7 @@
 ## Сборка и запуск
 1. Клонируйте репозиторий:
     ```sh
-    git clone <URL>
+    git clone https://github.com/ddos-pmv/YADRO.git
     cd YADRO
     ```
 2. Создайте директорию сборки и выполните сборку:
