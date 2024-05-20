@@ -4,12 +4,12 @@
 
 #ifndef YADRO_COMPUTER_CLUB_H
 #define YADRO_COMPUTER_CLUB_H
-#include <iostream>
 #include <algorithm>
-#include <memory>
-#include <set>
+#include <iostream>
 #include <map>
+#include <memory>
 #include <queue>
+#include <set>
 
 class Event;
 
@@ -29,40 +29,33 @@ struct Client {
 
 class ComputerClub {
 public:
-    bool initConfig(std::istream &inputFile);
-    int getTableCount() const{return tableCount;};
-    int getCurMaxTime() const {return curMaxTime;};
-    void setCurMaxTime(int time){
-        curMaxTime = std::max(curMaxTime, time);
-    }
+    bool initConfig(std::istream& inputFile);
+    int getTableCount() const { return tableCount; };
+    int getCurMaxTime() const { return curMaxTime; };
+    void setCurMaxTime(int time) { curMaxTime = std::max(curMaxTime, time); }
     void processEvents();
     void printSummary();
     void processClosing();
 
     void addEvent(std::unique_ptr<Event> event);
-    int getTimeStart() const{ return timeStart;};
-    int getTimeEnd() const{return timeEnd;};
-    int getHourlyRate()const{return hourlyRate;};
-    int getWaitingCount(){return (int)waitingClients.size();};
-    int getOccupiedTables() const {return occupiedTables;};
-    int decOccupiedTables() {return --occupiedTables;};
-    int incOccupiedTables() {return ++occupiedTables;};
+    int getTimeStart() const { return timeStart; };
+    int getTimeEnd() const { return timeEnd; };
+    int getHourlyRate() const { return hourlyRate; };
+    int getWaitingCount() { return (int)waitingClients.size(); };
+    int getOccupiedTables() const { return occupiedTables; };
+    int decOccupiedTables() { return --occupiedTables; };
+    int incOccupiedTables() { return ++occupiedTables; };
 
-    void addWaitingClient(std::string &name);
+    void addWaitingClient(std::string& name);
     bool isFreeTable();
-    Client &getClient(std::string &name) {
-        return clients[name];
-    }
-    Table &getTable(int tableId){
-        return tables[tableId];
-    }
-    std::string &getFirstInQueue();
-    void popQueue(){ waitingClients.pop();};
-
+    Client& getClient(std::string& name) { return clients[name]; }
+    Table& getTable(int tableId) { return tables[tableId]; }
+    std::string& getFirstInQueue();
+    void popQueue() { waitingClients.pop(); };
 
 private:
-    std::map<std::string,Client> clients;
-    std::map<int,Table> tables;
+    std::map<std::string, Client> clients;
+    std::map<int, Table> tables;
     std::queue<std::string> waitingClients;
     std::vector<std::unique_ptr<Event>> events;
 
@@ -72,13 +65,9 @@ private:
     int hourlyRate;
     int curMaxTime = 0;
     int occupiedTables = 0;
-    bool initTables(std::string &line);
-    bool initTime(std::string &line);
-    bool initHourlyRate(std::string &line);
-
-
-
+    bool initTables(std::string& line);
+    bool initTime(std::string& line);
+    bool initHourlyRate(std::string& line);
 };
 
-
-#endif //YADRO_COMPUTER_CLUB_H
+#endif  // YADRO_COMPUTER_CLUB_H
