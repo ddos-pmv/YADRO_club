@@ -12,7 +12,7 @@
 void SeatEvent::print(std::ostream &out){
     out<<std::setfill('0') << std::setw(2)<<time/60
        <<":"<<std::setfill('0') << std::setw(2)<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
-};
+}
 void SeatInnerEvent::print(std::ostream &out) {
     out<<std::setfill('0') << std::setw(2)<<time/60
     <<":"<<std::setfill('0') << std::setw(2)<<time%60<<" "<<id<<" "<<detail<<" "<<tableId<<'\n';
@@ -21,7 +21,7 @@ void SeatInnerEvent::print(std::ostream &out) {
 
 
 bool EventFactory::validateTime(int hours, int minutes) {
-    return hours>=0 and minutes>=0 and hours<25 and minutes<61 and (minutes==0 and hours==24 || hours<24);
+    return (hours>=0 && minutes>=0 && hours<25 && minutes<61 && ((minutes==0 && hours==24) || hours<24));
 }
 bool EventFactory::validateName(std::string &name) {
     std::regex pattern("^[a-z0-9_-]+$");

@@ -1,0 +1,10 @@
+^C:\USERS\ПЕРЛИН СЕРГЕЙ\DOCUMENTS\CPP\YADRO\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/Перлин Сергей/Documents/CPP/YADRO" "-BC:/Users/Перлин Сергей/Documents/CPP/YADRO/buildFiles" --check-stamp-file "C:/Users/Перлин Сергей/Documents/CPP/YADRO/buildFiles/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

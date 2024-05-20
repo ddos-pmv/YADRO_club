@@ -8,13 +8,15 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <path_to_file>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <file_name>" << std::endl;
+        std::cerr << "input file must be placed in YADRO/data/..";
         return 1;
     }
-
-    std::ifstream inputFile(argv[1]);
+    std::string filePath = std::string(DATA_DIR) + "/" + argv[1];
+    std::ifstream inputFile(filePath);
     if (!inputFile.is_open()) {
         std::cerr << "Error opening file: " << argv[1] << std::endl;
+        std::cerr << "Input file must be placed in YADRO/data/..";
         return 1;
     }
 

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "YADRO.dir\\Debug\\main.obj",
+            "outputs": [
+                "C:\\Users\\Перлин Сергей\\Documents\\CPP\\YADRO\\buildFiles\\YADRO.dir\\Debug\\vc143.pdb",
+                "YADRO.dir\\Debug\\"
+            ],
+            "requires": []
+        }
+    ]
+}

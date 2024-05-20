@@ -37,13 +37,13 @@ bool ComputerClub::initTime(std::string &line) {
     char delim;
     int hours , minutes;
 
-    if(!(iss>>hours>>delim>>minutes) || hours<0 || hours>24 || minutes>60 || minutes<0 || (hours==24 and minutes>0)) {
+    if(!(iss>>hours>>delim>>minutes) || hours<0 || hours>24 || minutes>60 || minutes<0 || (hours==24 && minutes>0)) {
         std::cout<<line;
         return false;
     }
     timeStart = hours*60 + minutes;
 
-    if(!(iss>>hours>>delim>>minutes) ||hours<0 || hours>24 || minutes>60 || minutes<0 || (hours==24 and minutes>0)|| (hours*60 + minutes<timeStart)){
+    if(!(iss>>hours>>delim>>minutes) ||hours<0 || hours>24 || minutes>60 || minutes<0 || (hours==24 && minutes>0)|| (hours*60 + minutes<timeStart)){
         std::cout<<line;
         return false;
     }
