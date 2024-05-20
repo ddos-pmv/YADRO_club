@@ -1,3 +1,0 @@
-C:/Users/Перлин Сергей/Documents/CPP/YADRO/buildFiles/CMakeFiles/YADRO.dir
-C:/Users/Перлин Сергей/Documents/CPP/YADRO/buildFiles/CMakeFiles/ALL_BUILD.dir
-C:/Users/Перлин Сергей/Documents/CPP/YADRO/buildFiles/CMakeFiles/ZERO_CHECK.dir
