@@ -66,8 +66,5 @@ int main(int argc, char* argv[]) {
         club.printSummary();
     }
 
-    int a;
-    std::cin >> a;
-
     return 0;
 }
