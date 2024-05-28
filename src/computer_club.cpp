@@ -11,7 +11,7 @@
 bool ComputerClub::initConfig(std::istream& inputFile) {
     std::string line = "";
     if (!std::getline(inputFile, line) || !initTables(line)) {
-        std::cout << line;
+        std::cout << line << '\n';
         return false;
     };
     if (!(std::getline(inputFile, line)) || !initTime(line)) {
@@ -27,7 +27,7 @@ bool ComputerClub::initConfig(std::istream& inputFile) {
 
 bool ComputerClub::initTables(std::string& line) {
     std::istringstream iss(line);
-    if (!(iss >> tableCount) || tableCount < 0) return false;
+    if (!(iss >> tableCount) || tableCount <= 0) return false;
     return true;
 }
 
@@ -50,7 +50,7 @@ bool ComputerClub::initTime(std::string& line) {
         return false;
     }
     timeEnd = hours * 60 + minutes;
-    return true;
+    return timeStart<timeEnd;
 }
 
 bool ComputerClub::initHourlyRate(std::string& line) {
