@@ -13,8 +13,8 @@
 
 1. Клонируйте репозиторий:
    ```sh
-   git clone https://github.com/ddos-pmv/YADRO.git
-   cd YADRO
+   git clone https://github.com/ddos-pmv/YADRO_club.git
+   cd YADRO_club
    ```
 2. Создайте директорию сборки и выполните сборку:
 
