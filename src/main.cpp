@@ -14,8 +14,7 @@
 int main(int argc, char* argv[]) {
   // check start options
   if (argc != 2) {
-    std::cerr << "Usage: " << argv[0] << " <file_name>" << std::endl;
-    std::cerr << "input file must be placed in YADRO/data/..";
+    std::cerr << "Usage: " << argv[0] << " <file_path>" << std::endl;
     std::exit(-1);
   }
 
@@ -54,15 +53,14 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    std::cout << formatMinutes(club.timeStart()) <<  std::endl;
+    std::cout << formatMinutes(club.timeStart()) << std::endl;
     club.processEvents();
     club.processClosing();
     std::cout << formatMinutes(club.timeEnd()) << std::endl;
     club.printSummary();
 
-
   } catch (const ParseException& e) {
-    std::cerr << "Parse excpetion: " << e.what() << std::endl;
+    std::cerr << "Parse exception: " << e.what() << std::endl;
   } catch (const std::exception& e) {
     std::cerr << "Unexpected err: " << e.what() << std::endl;
   }

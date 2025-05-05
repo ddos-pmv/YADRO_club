@@ -3,3 +3,10 @@ build/
 *.o
 *.exe
 .DS_Store
+/cmake-build-release/
+/cmake-build-debug/
+/build/
+/.idea/
+/bin/
+/buildFiles/
+.vscode
