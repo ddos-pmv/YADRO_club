@@ -1,100 +1,89 @@
-//
-// Created by sergey on 17.05.24.
-//
+#include "computer_club.h"
+
 #include <iostream>
+#include <optional>
 #include <sstream>
 #include <string>
 
-#include "computer_club.h"
 #include "event.h"
+#include "utils/parse_utils.h"
+#include "utils/types.h"
 
-bool ComputerClub::initConfig(std::istream& inputFile) {
-    std::string line = "";
-    if (!std::getline(inputFile, line) || !initTables(line)) {
-        std::cout << line << '\n';
-        return false;
-    };
-    if (!(std::getline(inputFile, line)) || !initTime(line)) {
-        std::cout << line << '\n';
-        return false;
-    }
-    if (!(std::getline(inputFile, line)) || !initHourlyRate(line)) {
-        std::cout << line << '\n';
-        return false;
-    }
-    return true;
-}
+ComputerClub::ComputerClub(const ClubConfig& config) : m_config(config) {}
 
-bool ComputerClub::initTables(std::string& line) {
-    std::istringstream iss(line);
-    if (!(iss >> tableCount) || tableCount <= 0) return false;
-    return true;
-}
-
-bool ComputerClub::initTime(std::string& line) {
-    std::istringstream iss(line);
-    char delim;
-    int hours, minutes;
-
-    if (!(iss >> hours >> delim >> minutes) || hours < 0 || hours > 24 ||
-        minutes > 60 || minutes < 0 || (hours == 24 && minutes > 0)) {
-        std::cout << line;
-        return false;
-    }
-    timeStart = hours * 60 + minutes;
-
-    if (!(iss >> hours >> delim >> minutes) || hours < 0 || hours > 24 ||
-        minutes > 60 || minutes < 0 || (hours == 24 && minutes > 0) ||
-        ((hours * 60 + minutes) < timeStart)) {
-        std::cout << line;
-        return false;
-    }
-    timeEnd = hours * 60 + minutes;
-    return timeStart<timeEnd;
-}
-
-bool ComputerClub::initHourlyRate(std::string& line) {
-    std::istringstream iss(line);
-    if (!(iss >> hourlyRate) || hourlyRate < 0) {
-        std::cout << line;
-        return false;
-    }
-    return true;
+void ComputerClub::processEvents() {
+  for (auto& event : events) {
+    event->print();
+    event->execute();
+  }
 }
 
 void ComputerClub::addEvent(std::unique_ptr<Event> event) {
-    events.push_back(std::move(event));
+  events.push_back(std::move(event));
 }
 
-void ComputerClub::processEvents() {
-    for (auto& event : events) {
-        event->print();
-        event->execute();
-    }
+void ComputerClub::addWaitingClient(const std::string& name) {
+  waitingClients.emplace(name);
 }
 
-void ComputerClub::addWaitingClient(std::string& name) {
-    waitingClients.emplace(name);
+std::optional<std::string> ComputerClub::getFirstInQueue() const {
+  if (waitingClients.empty()) {
+    return std::nullopt;
+  }
+  return waitingClients.front();
 }
 
-std::string& ComputerClub::getFirstInQueue() { return waitingClients.front(); }
+void ComputerClub::popQueue() {
+  if (!waitingClients.empty()) {
+    waitingClients.pop();
+  }
+}
 
 void ComputerClub::printSummary() {
-    for (int i = 1; i <= tableCount; i++) {
-        std::cout << i << " " << tables[i].revenue << " " << std::setfill('0')
-            << std::setw(2) << tables[i].occupiedMinutes / 60 << ":"
-            << std::setfill('0') << std::setw(2)
-            << tables[i].occupiedMinutes % 60 << '\n';
-    }
+  for (int i = 1; i <= m_config.tableCount; i++) {
+    std::cout << i << " " << tables[i].revenue << " " << formatMinutes(tables[i].occupiedMinutes) << '\n';
+  }
 }
 
 void ComputerClub::processClosing() {
-    for (auto& [key, client] : clients) {
-        if (client.inClub) {
-            EventPtr exitEvent =
-                std::make_unique<ExitEvent>(timeEnd, key, *this);
-            exitEvent->print();
-            exitEvent->execute();
-        }
+  for (auto& [key, client] : clients) {
+    if (client.inClub) {
+      auto exitEvent =
+          std::make_unique<ExitEvent>(m_config.timeEnd, key, *this);
+      exitEvent->print();
+      exitEvent->execute();
     }
+  }
 }
+
+// Getters
+int ComputerClub::tableCount() const { return m_config.tableCount; }
+
+int ComputerClub::getCurMaxTime() const { return curMaxTime; }
+
+int ComputerClub::timeStart() const { return m_config.timeStart; }
+
+int ComputerClub::timeEnd() const { return m_config.timeEnd; }
+
+int ComputerClub::hourlyRate() const { return m_config.hourlyRate; }
+
+int ComputerClub::getWaitingCount() const {
+  return static_cast<int>(waitingClients.size());
+}
+
+int ComputerClub::getOccupiedTables() const { return occupiedTables; }
+
+Client& ComputerClub::getClient(const std::string& name) {
+  return clients[name];
+}
+
+Table& ComputerClub::getTable(int tableId) { return tables[tableId]; }
+
+// Setters
+void ComputerClub::setCurMaxTime(int time) {
+  curMaxTime = std::max(curMaxTime, time);
+}
+
+int ComputerClub::decOccupiedTables() { return --occupiedTables; }
+
+int ComputerClub::incOccupiedTables() { return ++occupiedTables; }

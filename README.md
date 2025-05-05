@@ -8,6 +8,7 @@
 
 - CMake 3.2 или выше
 - Компилятор C++ с поддержкой стандарта C++20
+- - **Google Test** для тестирования (опционально)
 
 ## Сборка и запуск
 
@@ -20,19 +21,24 @@
 
    ```bash
 
-   /YADRO$ mkdir buildFiles
-   /YADRO$ cd buildFiles
-   YADRO/build$ cmake ..
-   YADRO/build$ cmake --build .
+   /YADRO_club$ cmake -S . -B buildFiles
+   /YADRO_club$ cmake --build buildFiles
+
    ```
 
-3. Перейдите к исполняемому файлу и запустите:
+3. Запустите программу:
 
-```bash
-    YADRO/buildFiles$ cd ../bin
-    YADRO/bin$ ./YADRO input.txt
-```
+   ```bash
+   /YADRO_club$ ./buildFiles/YADRO_club ./data/input.txt
+   ```
+
+
+## Структура проекта
+- src/ — исходный код программы.
+- data/ — входные данные для программы.
+- bin/ — директория для исполняемых файлов.
+- buildFiles/ — директория для файлов сборки.
+- Dockerfile — конфигурация для создания Docker-образа.
 
 ## Важно
-
 - **Все файлы со входными данными должны лежать в папке data/**
